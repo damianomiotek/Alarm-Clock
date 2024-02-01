@@ -18,8 +18,7 @@ class MainWindow(QMainWindow):
         tabs.addTab(Stopwatch(), "Stoper")
         tabs.addTab(Timer(), "Minutnik")
         tabs.addTab(Clock(), "Aktualny czas")
-        tabs.addTab(WorldClock(), "Aktualny czas w różnych miejscach świecie")
+        tabs.addTab(WorldClock(), "Aktualny czas na świecie")
         self.setCentralWidget(tabs)
-
 
         self.setWindowTitle("Zegar")

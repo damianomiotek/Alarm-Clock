@@ -1,6 +1,17 @@
+import os
+from pathlib import Path
+
 import pygame
 from PyQt6.QtCore import QDateTime
-from PyQt6.QtWidgets import QRadioButton
+from PyQt6.QtGui import QIcon, QPixmap
+from PyQt6.QtWidgets import QRadioButton, QFileDialog
+
+
+def yes_button_str():
+    return "Tak"
+
+#iconImage = QPixmap("../musicIcon3.png")
+#musicIcon = QIcon(QPixmap("musicIcon.jpg"))
 
 
 def get_current_date():
@@ -27,6 +38,13 @@ def get_radio_buttons_for_days_of_week():
     return radio_buttons
 
 
+month_names = {"01": "stycznia", "02": "lutego", "03": "marca", "04": "kwietnia", "05": "maja", "06": "czerwca",
+               "07": "lipca", "08": "sierpnia", "09": "września", "10": "października", "11": "listopada",
+               "12": "grudnia"}
+
+weekdays = ["poniedziałek", "wtorek", "środa", "czwartek", "piątek", "sobota", "niedziela"]
+
+
 class Utilities:
     def __init__(self):
         pygame.mixer.init()
@@ -38,3 +56,14 @@ class Utilities:
 
     def stop_alarm(self):
         self.sound.stop()
+
+    def select_alarm_sound(self):
+        file_filter = 'Pliki dźwiękowe (*.mp3 *.m4a *.flac *.wav *.wma *.aac);; Wszystkie pliki (*.*)'
+        file_name = QFileDialog.getOpenFileName(
+            caption='Wybierz dźwięk budzika',
+            directory=str(Path.home()),
+            filter=file_filter
+        )
+        if file_name[0] != "":
+            self.sound_file = file_name[0]
+            self.sound = pygame.mixer.Sound(self.sound_file)

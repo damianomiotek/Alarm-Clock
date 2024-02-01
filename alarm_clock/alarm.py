@@ -1,13 +1,14 @@
 import time
+from pathlib import Path
 
-from PyQt6.QtWidgets import (QWidget, QHBoxLayout, QVBoxLayout, QTimeEdit, QPushButton, QLineEdit, QLabel)
+from PyQt6.QtWidgets import (QWidget, QHBoxLayout, QVBoxLayout, QTimeEdit, QPushButton, QLineEdit, QLabel, QFileDialog)
 from PyQt6.QtCore import Qt, QTimer, QTime, QDate
 
-from disable_alarm_clock_dialog import DisableAlarmClockDialog
-from setting_alarm_clock_dialog import SettingAlarmClockDialog, yes_button_str
-from take_nap_dialog import TakeNapDialog, nap_button_str, disable_alarm_button_str
-from utilities import Utilities, get_current_date, get_radio_buttons_for_days_of_week
-from switch_button import SwitchButton
+from dialogs.disable_alarm_clock_dialog import DisableAlarmClockDialog
+from dialogs.setting_alarm_clock_dialog import SettingAlarmClockDialog
+from dialogs.take_nap_dialog import TakeNapDialog, nap_button_str, disable_alarm_button_str
+from utilities import Utilities, get_current_date, get_radio_buttons_for_days_of_week, yes_button_str
+from other_widgets.switch_button import SwitchButton
 
 
 class Alarm(QWidget):
@@ -42,8 +43,10 @@ class Alarm(QWidget):
         self.days_of_week_radio_btns = get_radio_buttons_for_days_of_week()
 
         self.bottom_layout = QHBoxLayout()
-        self.button = QPushButton("Ustaw")
-        self.button.clicked.connect(self.button_clicked)
+        self.select_alarm_sound_button = QPushButton("Wybierz dźwięk budzika")
+        self.select_alarm_sound_button.clicked.connect(self.select_alarm_sound_clicked)
+        self.set_button = QPushButton("Ustaw")
+        self.set_button.clicked.connect(self.set_button_clicked)
         self.switch_button = SwitchButton()
         self.switch_button.clicked.connect(self.switch_button_clicked)
 
@@ -64,16 +67,20 @@ class Alarm(QWidget):
         current_time = time.strftime("%H:%M:%S")
         self.display_time.setText(current_time)
         self.display_time.setMaximumSize(300, 50)
-        self.display_time.setStyleSheet("background-color: rgb(221, 221, 221)")
+        self.display_time.setStyleSheet("background-color: rgb(221, 221, 221); border : 0px")
         self.display_date.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.edit_time.setDisplayFormat("hh:mm")
-        self.button.setMaximumSize(70, 30)
+        self.select_alarm_sound_button.setStyleSheet("border-radius : 5; border : 1px solid black; "
+                                                     "background-color : rgb(221, 221, 221)")
+        self.select_alarm_sound_button.setMaximumSize(200, 30)
+        self.set_button.setMaximumSize(70, 30)
 
     def edit_layouts_except_base_layout(self):
         self.display_time_layout.addWidget(self.display_time)
         for radio_button in self.days_of_week_radio_btns:
             self.middle_layout.addWidget(radio_button)
-        self.bottom_layout.addWidget(self.button, alignment=Qt.AlignmentFlag.AlignRight)
+        self.bottom_layout.addWidget(self.select_alarm_sound_button, alignment=Qt.AlignmentFlag.AlignLeft)
+        self.bottom_layout.addWidget(self.set_button, alignment=Qt.AlignmentFlag.AlignCenter)
         self.bottom_layout.addWidget(self.switch_button, alignment=Qt.AlignmentFlag.AlignRight)
 
     def display_time_timer_timeout(self):
@@ -84,7 +91,7 @@ class Alarm(QWidget):
         if self.display_date.text() != get_current_date():
             self.display_date.setText(get_current_date())
 
-    def button_clicked(self):
+    def set_button_clicked(self):
         set_alarm_dialog = SettingAlarmClockDialog(self, self.edit_time.time())
         set_alarm_dialog.exec()
 
@@ -102,7 +109,7 @@ class Alarm(QWidget):
 
     def switch_button_clicked(self):
         if self.switch_button.isChecked():
-            self.button_clicked()
+            self.set_button_clicked()
         else:
             disable_alarm_dialog = DisableAlarmClockDialog(self)
             disable_alarm_dialog.exec()
@@ -144,3 +151,6 @@ class Alarm(QWidget):
             if len(self.alarm_in_days) == 0:
                 self.switch_button.setChecked(False)
                 self.alarm_timer.stop()
+
+    def select_alarm_sound_clicked(self):
+        self.utilities.select_alarm_sound()
