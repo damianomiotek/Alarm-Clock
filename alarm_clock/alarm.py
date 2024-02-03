@@ -1,7 +1,6 @@
 import time
-from pathlib import Path
 
-from PyQt6.QtWidgets import (QWidget, QHBoxLayout, QVBoxLayout, QTimeEdit, QPushButton, QLineEdit, QLabel, QFileDialog)
+from PyQt6.QtWidgets import (QWidget, QHBoxLayout, QVBoxLayout, QTimeEdit, QPushButton, QLineEdit, QLabel)
 from PyQt6.QtCore import Qt, QTimer, QTime, QDate
 
 from dialogs.disable_alarm_clock_dialog import DisableAlarmClockDialog
@@ -43,21 +42,23 @@ class Alarm(QWidget):
         self.days_of_week_radio_btns = get_radio_buttons_for_days_of_week()
 
         self.bottom_layout = QHBoxLayout()
-        self.select_alarm_sound_button = QPushButton("Wybierz dźwięk budzika")
-        self.select_alarm_sound_button.clicked.connect(self.select_alarm_sound_clicked)
+        self.select_alarm_sound = QPushButton("Wybierz dźwięk budzika")
+        self.select_alarm_sound.clicked.connect(self.select_alarm_sound_clicked)
         self.set_button = QPushButton("Ustaw")
         self.set_button.clicked.connect(self.set_button_clicked)
         self.switch_button = SwitchButton()
         self.switch_button.clicked.connect(self.switch_button_clicked)
 
         self.edit_widgets()
-        self.edit_layouts_except_base_layout()
+        self.edit_layouts()
 
         self.base_layout.addLayout(self.display_time_layout)
         self.base_layout.addWidget(self.display_date)
         self.base_layout.addWidget(self.edit_time)
         self.base_layout.addLayout(self.middle_layout)
+        self.base_layout.addSpacing(40)
         self.base_layout.addLayout(self.bottom_layout)
+        self.base_layout.addSpacing(40)
 
         self.setLayout(self.base_layout)
 
@@ -69,17 +70,21 @@ class Alarm(QWidget):
         self.display_time.setMaximumSize(300, 50)
         self.display_time.setStyleSheet("background-color: rgb(221, 221, 221); border : 0px")
         self.display_date.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.edit_time.setMaximumHeight(42)
+        self.edit_time.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.edit_time.setStyleSheet("font-size : 20pt")
         self.edit_time.setDisplayFormat("hh:mm")
-        self.select_alarm_sound_button.setStyleSheet("border-radius : 5; border : 1px solid black; "
-                                                     "background-color : rgb(221, 221, 221)")
-        self.select_alarm_sound_button.setMaximumSize(200, 30)
-        self.set_button.setMaximumSize(70, 30)
+        self.select_alarm_sound.setStyleSheet("border-radius : 10; border : 1px solid black;"
+                                              "background-color : rgb(221, 221, 221); font-size : 15pt")
+        self.select_alarm_sound.setMinimumSize(230, 40)
+        self.set_button.setMinimumSize(190, 60)
+        self.set_button.setStyleSheet("font-size : 16pt")
 
-    def edit_layouts_except_base_layout(self):
+    def edit_layouts(self):
         self.display_time_layout.addWidget(self.display_time)
         for radio_button in self.days_of_week_radio_btns:
             self.middle_layout.addWidget(radio_button)
-        self.bottom_layout.addWidget(self.select_alarm_sound_button, alignment=Qt.AlignmentFlag.AlignLeft)
+        self.bottom_layout.addWidget(self.select_alarm_sound, alignment=Qt.AlignmentFlag.AlignLeft)
         self.bottom_layout.addWidget(self.set_button, alignment=Qt.AlignmentFlag.AlignCenter)
         self.bottom_layout.addWidget(self.switch_button, alignment=Qt.AlignmentFlag.AlignRight)
 
@@ -115,6 +120,8 @@ class Alarm(QWidget):
             disable_alarm_dialog.exec()
             if disable_alarm_dialog.clickedButton().text() == yes_button_str():
                 self.alarm_timer.stop()
+                self.alarm_only_once = False
+                self.alarm_in_days.clear()
             else:
                 self.switch_button.setChecked(True)
 
