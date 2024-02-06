@@ -1,6 +1,6 @@
 import time
 
-from PyQt6.QtWidgets import (QWidget, QHBoxLayout, QVBoxLayout, QTimeEdit, QPushButton, QLineEdit, QLabel)
+from PyQt6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QTimeEdit, QPushButton, QLabel
 from PyQt6.QtCore import Qt, QTimer, QTime, QDate
 
 from dialogs.disable_alarm_clock_dialog import DisableAlarmClockDialog
@@ -25,16 +25,10 @@ class Alarm(QWidget):
         self.nap_timer = QTimer()
         self.nap_timer.timeout.connect(self.check_alarm_after_nap)
 
-        self.display_time = QLineEdit()
-        self.display_time_layout = QHBoxLayout()
-        self.display_time_timer = QTimer()
-        self.display_time_timer.start(1000)
-        self.display_time_timer.timeout.connect(self.display_time_timer_timeout)
-
-        self.display_date = QLabel(get_current_date())
-        self.display_date_timer = QTimer()
-        self.display_date_timer.start(1000)
-        self.display_date_timer.timeout.connect(self.display_date_timer_timeout)
+        self.display_date_and_time = QLabel()
+        self.display_timer = QTimer()
+        self.display_timer.start(1000)
+        self.display_timer.timeout.connect(self.display_timer_timeout)
 
         self.edit_time = QTimeEdit()
 
@@ -52,8 +46,8 @@ class Alarm(QWidget):
         self.edit_widgets()
         self.edit_layouts()
 
-        self.base_layout.addLayout(self.display_time_layout)
-        self.base_layout.addWidget(self.display_date)
+        self.base_layout.addSpacing(125)
+        self.base_layout.addWidget(self.display_date_and_time)
         self.base_layout.addWidget(self.edit_time)
         self.base_layout.addLayout(self.middle_layout)
         self.base_layout.addSpacing(40)
@@ -63,38 +57,37 @@ class Alarm(QWidget):
         self.setLayout(self.base_layout)
 
     def edit_widgets(self):
-        self.display_time.setReadOnly(True)
-        self.display_time.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.display_date_and_time.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        self.display_date_and_time.setTextFormat(Qt.TextFormat.RichText)
+        current_date = get_current_date()
         current_time = time.strftime("%H:%M:%S")
-        self.display_time.setText(current_time)
-        self.display_time.setMaximumSize(300, 50)
-        self.display_time.setStyleSheet("background-color: rgb(221, 221, 221); border : 0px")
-        self.display_date.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.edit_time.setMaximumHeight(42)
+        current_date_and_time = (
+            f'<span style="font-size:26pt;">{current_date}</span><br> <span style="font-size:60pt; font-weight:900; font-style:oblique; '
+            f'font-family:Arial, sans-serif;">{current_time}</span>')
+        self.display_date_and_time.setText(current_date_and_time)
+        self.edit_time.setMaximumHeight(38)
         self.edit_time.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.edit_time.setStyleSheet("font-size : 20pt")
+        self.edit_time.setStyleSheet("font-size : 18pt")
         self.edit_time.setDisplayFormat("hh:mm")
-        self.select_alarm_sound.setStyleSheet("border-radius : 10; border : 1px solid black;"
-                                              "background-color : rgb(221, 221, 221); font-size : 15pt")
-        self.select_alarm_sound.setMinimumSize(230, 40)
-        self.set_button.setMinimumSize(190, 60)
-        self.set_button.setStyleSheet("font-size : 16pt")
+        self.select_alarm_sound.setStyleSheet("border-radius : 5; border : 1px solid black;"
+                                              "background-color : rgb(221, 221, 221); font-size : 11pt")
+        self.select_alarm_sound.setMinimumSize(180, 30)
+        self.set_button.setMinimumSize(100, 40)
+        self.set_button.setStyleSheet("font-size : 11pt")
 
     def edit_layouts(self):
-        self.display_time_layout.addWidget(self.display_time)
         for radio_button in self.days_of_week_radio_btns:
             self.middle_layout.addWidget(radio_button)
         self.bottom_layout.addWidget(self.select_alarm_sound, alignment=Qt.AlignmentFlag.AlignLeft)
         self.bottom_layout.addWidget(self.set_button, alignment=Qt.AlignmentFlag.AlignCenter)
         self.bottom_layout.addWidget(self.switch_button, alignment=Qt.AlignmentFlag.AlignRight)
 
-    def display_time_timer_timeout(self):
+    def display_timer_timeout(self):
+        current_date = get_current_date()
         current_time = time.strftime("%H:%M:%S")
-        self.display_time.setText(current_time)
-
-    def display_date_timer_timeout(self):
-        if self.display_date.text() != get_current_date():
-            self.display_date.setText(get_current_date())
+        current_date_and_time = (f'<span style="font-size:26pt;">{current_date}</span><br> <span style="font-size:60pt; font-weight:900; font-style:oblique; '
+                         f'font-family:Arial, sans-serif;">{current_time}</span>')
+        self.display_date_and_time.setText(current_date_and_time)
 
     def set_button_clicked(self):
         set_alarm_dialog = SettingAlarmClockDialog(self, self.edit_time.time())

@@ -23,30 +23,29 @@ class Clock(QWidget):
         self.display_time_timer = QTimer()
         self.display_time_timer.start(1000)
         self.display_time_timer.timeout.connect(self.display_time_timer_timeout)
-        self.display_time_layout = QHBoxLayout()
-        self.display_time_layout.addWidget(self.display_time)
 
         self.edit_widgets()
 
-        self.base_layout.addWidget(self.display_date)
-        self.base_layout.addWidget(self.analog_clock)
-        self.base_layout.addLayout(self.display_time_layout)
-        self.base_layout.setStretchFactor(self.display_date, 1)
-        self.base_layout.setStretchFactor(self.analog_clock, 3)
+        self.base_layout.addWidget(self.display_date, stretch=1)
+        self.base_layout.addSpacing(24)
+        self.base_layout.addWidget(self.analog_clock, stretch=7)
+        self.base_layout.addSpacing(14)
+        self.base_layout.addWidget(self.display_time, stretch=2, alignment=Qt.AlignmentFlag.AlignHCenter)
         self.setLayout(self.base_layout)
 
     def edit_widgets(self):
         self.display_date.setAlignment(Qt.AlignmentFlag.AlignHCenter)
-        font = self.display_date.font()
-        font.setPointSize(22)
-        self.display_date.setFont(font)
+        self.display_date.setStyleSheet("font-size: 34pt; color : #4b280a")
 
         self.display_time.setReadOnly(True)
-        self.display_time.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.display_time.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        display_time_font = self.display_time.font()
+        display_time_font.setPointSize(26)
+        self.display_time.setFont(display_time_font)
         current_time = time.strftime("%H:%M:%S")
         self.display_time.setText(current_time)
-        self.display_time.setMaximumWidth(200)
-        self.display_time.setMinimumHeight(35)
+        self.display_time.setMaximumWidth(300)
+        self.display_time.setMinimumHeight(55)
 
     def display_date_timer_timeout(self):
         if self.display_date.text() != get_current_date():

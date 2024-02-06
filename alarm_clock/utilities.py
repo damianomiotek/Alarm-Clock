@@ -1,20 +1,23 @@
-import os
 from pathlib import Path
 
 import pygame
-from PyQt6.QtCore import QDateTime
-from PyQt6.QtGui import QIcon, QPixmap
+from PyQt6.QtCore import QDateTime, QDate
 from PyQt6.QtWidgets import QRadioButton, QFileDialog
+
+month_names = {"01": "stycznia", "02": "lutego", "03": "marca", "04": "kwietnia", "05": "maja", "06": "czerwca",
+               "07": "lipca", "08": "sierpnia", "09": "września", "10": "października", "11": "listopada",
+               "12": "grudnia"}
+
+weekdays = ["poniedziałek", "wtorek", "środa", "czwartek", "piątek", "sobota", "niedziela"]
 
 
 def yes_button_str():
     return "Tak"
 
-#iconImage = QPixmap("../musicIcon3.png")
-#musicIcon = QIcon(QPixmap("musicIcon.jpg"))
-
 
 def get_current_date():
+    current_day = QDate.currentDate().dayOfWeek()
+    current_day = weekdays[current_day - 1]
     current_date = QDateTime.currentDateTime().toString("dd.MM.yyyy")
     day = current_date[0:2]
     if day[0] == '0':
@@ -25,7 +28,7 @@ def get_current_date():
                      "12": "Grudzień"}
     month = polish_months[month]
     year = current_date[-4:]
-    current_date = f"{day} {month} {year}"
+    current_date = f"{current_day}, {day} {month} {year}"
     return current_date
 
 
@@ -33,16 +36,12 @@ def get_radio_buttons_for_days_of_week():
     days_of_week = ["Pon", "Wt", "Śr", "Czw", "Pt", "Sob", "Nd"]
     radio_buttons = []
     for day in range(7):
-        radio_buttons.append(QRadioButton(days_of_week[day]))
-        radio_buttons[-1].setAutoExclusive(False)
+        radio_button = QRadioButton(days_of_week[day])
+        radio_button.setAutoExclusive(False)
+        radio_button.setMaximumSize(50, 50)
+        radio_button.setStyleSheet("font-size: 13pt")
+        radio_buttons.append(radio_button)
     return radio_buttons
-
-
-month_names = {"01": "stycznia", "02": "lutego", "03": "marca", "04": "kwietnia", "05": "maja", "06": "czerwca",
-               "07": "lipca", "08": "sierpnia", "09": "września", "10": "października", "11": "listopada",
-               "12": "grudnia"}
-
-weekdays = ["poniedziałek", "wtorek", "środa", "czwartek", "piątek", "sobota", "niedziela"]
 
 
 class Utilities:

@@ -24,29 +24,31 @@ class Stopwatch(QWidget):
         self.edit_widgets()
 
         self.base_layout.addWidget(self.time)
-        self.control_panel.addWidget(self.start_stop_button, Qt.AlignmentFlag.AlignRight)
-        self.control_panel.addWidget(self.reset_button, Qt.AlignmentFlag.AlignLeft)
+        self.base_layout.addSpacing(50)
+        self.control_panel.addWidget(self.start_stop_button)
+        self.control_panel.addWidget(self.reset_button)
         self.base_layout.addLayout(self.control_panel)
+        self.base_layout.addSpacing(80)
 
         self.setLayout(self.base_layout)
 
     def edit_widgets(self):
         time_font = self.time.font()
-        time_font.setPointSize(85)
+        time_font.setPointSize(95)
         self.time.setFont(time_font)
         self.time.setAlignment(Qt.AlignmentFlag.AlignBottom | Qt.AlignmentFlag.AlignCenter)
 
         start_stop_button_font = self.start_stop_button.font()
         start_stop_button_font.setPointSize(20)
         self.start_stop_button.setFont(start_stop_button_font)
-        self.start_stop_button.setMaximumSize(120, 120)
-        self.start_stop_button.setStyleSheet("border-radius : 60; border : 2px solid black; background-color: green")
+        self.start_stop_button.setMaximumSize(130, 130)
+        self.start_stop_button.setStyleSheet("border-radius : 65; border : 2px solid black; background-color: green")
 
         reset_button_font = self.reset_button.font()
         reset_button_font.setPointSize(20)
         self.reset_button.setFont(reset_button_font)
-        self.reset_button.setMaximumSize(120, 120)
-        self.reset_button.setStyleSheet("border-radius : 60; border : 2px solid black; background-color: orange")
+        self.reset_button.setMaximumSize(130, 130)
+        self.reset_button.setStyleSheet("border-radius : 65; border : 2px solid black; background-color: orange")
 
     def start_button_clicked(self):
         if not self.started:

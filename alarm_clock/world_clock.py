@@ -20,7 +20,7 @@ class WorldClock(QWidget):
         self.time = QLabel()
         self.date_and_hour_difference = QLabel()
         self.input_data = QVBoxLayout()
-        self.prompt_to_enter_data = QLabel("Wprowadź nazwę miejscowości, lub nazwę miejscowości i kraj, gdzie chcesz"
+        self.prompt_to_enter_data = QLabel("Wprowadź nazwę miejscowości, lub nazwę miejscowości i kraj gdzie chcesz"
                                            " otrzymać aktualny czas")
         self.place = QLineEdit()
         self.buttons = QHBoxLayout()
@@ -32,49 +32,55 @@ class WorldClock(QWidget):
         self.edit_layouts()
 
         self.base_layout.addLayout(self.display_result)
+        self.base_layout.addSpacing(170)
         self.base_layout.addLayout(self.input_data)
+        self.base_layout.addSpacing(50)
         self.setLayout(self.base_layout)
 
     def edit_widgets(self):
         self.time.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignBottom)
-        #self.time.setMaximumHeight(800)
         time_font = self.time.font()
-        time_font.setPointSize(45)
+        time_font.setPointSize(60)
         time_font.setBold(True)
         self.time.setFont(time_font)
 
         self.date_and_hour_difference.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignTop)
-        self.date_and_hour_difference.setMaximumHeight(70)
+        self.date_and_hour_difference.setMaximumHeight(92)
         date_hour_difference_font = self.date_and_hour_difference.font()
-        date_hour_difference_font.setPointSize(20)
+        date_hour_difference_font.setPointSize(26)
         self.date_and_hour_difference.setFont(date_hour_difference_font)
 
-        self.prompt_to_enter_data.setMaximumHeight(32)
+        self.prompt_to_enter_data.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.prompt_to_enter_data.setMaximumHeight(41)
         prompt_font = self.prompt_to_enter_data.font()
-        prompt_font.setPointSize(13)
+        prompt_font.setPointSize(14)
         self.prompt_to_enter_data.setFont(prompt_font)
 
         self.place.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.place.setMaximumHeight(50)
+        self.place.setMaximumHeight(60)
         place_font = self.place.font()
-        place_font.setPointSize(12)
+        place_font.setPointSize(19)
         self.place.setFont(place_font)
 
-        self.search_button.setMaximumWidth(100)
+        self.search_button.setMaximumSize(150, 41)
+        search_button_font = self.search_button.font()
+        search_button_font.setPointSize(11)
+        self.search_button.setFont(search_button_font)
         self.select_button.addItems([self.search_in_api_str, self.search_in_google_str])
-        self.select_button.setMaximumWidth(220)
+        self.select_button.setMaximumSize(280, 41)
+        select_button_font = self.select_button.font()
+        select_button_font.setPointSize(11)
+        self.select_button.setFont(select_button_font)
 
     def edit_layouts(self):
         self.display_result.addWidget(self.time)
         self.display_result.addWidget(self.date_and_hour_difference)
-        label_for_additional_space = QLabel()
-        label_for_additional_space.setMaximumHeight(160)
-        self.display_result.addWidget(label_for_additional_space)
 
         self.input_data.addWidget(self.prompt_to_enter_data)
         self.input_data.addWidget(self.place)
-        self.buttons.addWidget(self.search_button, Qt.AlignmentFlag.AlignCenter)
-        self.buttons.addWidget(self.select_button, Qt.AlignmentFlag.AlignRight)
+        self.input_data.addSpacing(25)
+        self.buttons.addWidget(self.search_button)
+        self.buttons.addWidget(self.select_button)
         self.input_data.addLayout(self.buttons)
 
     def search_time(self):
@@ -159,15 +165,14 @@ class WorldClock(QWidget):
                 found_hour_difference = f"{found_hour_difference} do przodu"
             elif hour_in_current_place > found_hour:
                 found_hour_difference = f"{found_hour_difference} do tyłu"
-        elif (current_weekday > found_weekday != 0 and current_weekday != 6
-              or (current_weekday == 0 and found_weekday == 6)):
-            hour_difference = 24 - found_hour + hour_in_current_place
-            found_hour_difference = self.get_found_hour_difference(hour_difference)
-            found_hour_difference = f"{found_hour_difference} do tyłu"
         elif current_weekday < found_weekday or (current_weekday == 6 and found_weekday == 0):
             hour_difference = 24 - hour_in_current_place + found_hour
             found_hour_difference = self.get_found_hour_difference(hour_difference)
             found_hour_difference = f"{found_hour_difference} do przodu"
+        elif current_weekday > found_weekday or (current_weekday == 0 and found_weekday == 6):
+            hour_difference = 24 - found_hour + hour_in_current_place
+            found_hour_difference = self.get_found_hour_difference(hour_difference)
+            found_hour_difference = f"{found_hour_difference} do tyłu"
 
         return found_time, found_date + found_hour_difference
 

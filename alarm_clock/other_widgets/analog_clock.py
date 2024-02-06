@@ -46,16 +46,16 @@ class AnalogClock(QWidget):
             if i == 0:
                 painter.translate(-3, -77)
             if i == 1:
-                painter.translate(-3, -77)
+                painter.translate(-4, -74)
                 painter.rotate(-30)
             elif i == 2:
-                painter.translate(-5, -74)
+                painter.translate(-5, -72)
                 painter.rotate(-60)
             elif i == 3:
-                painter.translate(-5, -73)
+                painter.translate(-5, -71)
                 painter.rotate(-90)
             elif i == 4:
-                painter.translate(-3, -70)
+                painter.translate(-3, -68)
                 painter.rotate(-120)
             elif i == 5:
                 painter.translate(-2, -68)
@@ -70,13 +70,13 @@ class AnalogClock(QWidget):
                 painter.translate(6, -75)
                 painter.rotate(120)
             elif i == 9:
-                painter.translate(7, -77)
+                painter.translate(7, -78)
                 painter.rotate(90)
             elif i == 10:
-                painter.translate(3, -79)
+                painter.translate(3, -80)
                 painter.rotate(60)
             elif i == 11:
-                painter.translate(2, -79)
+                painter.translate(-4, -79)
                 painter.rotate(30)
 
             painter.drawText(0, 10, f"{i}")
