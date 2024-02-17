@@ -3,11 +3,11 @@ import time
 from PyQt6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QTimeEdit, QPushButton, QLabel
 from PyQt6.QtCore import Qt, QTimer, QTime, QDate
 
-from dialogs.disable_alarm_clock_dialog import DisableAlarmClockDialog
-from dialogs.setting_alarm_clock_dialog import SettingAlarmClockDialog
-from dialogs.take_nap_dialog import TakeNapDialog, nap_button_str, disable_alarm_button_str
-from utilities import Utilities, get_current_date, get_radio_buttons_for_days_of_week, yes_button_str
-from other_widgets.switch_button import SwitchButton
+from alarm_clock.dialogs.disable_alarm_clock_dialog import DisableAlarmClockDialog
+from alarm_clock.dialogs.setting_alarm_clock_dialog import SettingAlarmClockDialog
+from alarm_clock.dialogs.take_nap_dialog import TakeNapDialog, nap_button_str, disable_alarm_button_str
+from alarm_clock.utilities import Utilities, get_current_date, get_radio_buttons_for_days_of_week, yes_button_str
+from alarm_clock.other_widgets.switch_button import SwitchButton
 
 
 class Alarm(QWidget):
@@ -86,7 +86,7 @@ class Alarm(QWidget):
         current_date = get_current_date()
         current_time = time.strftime("%H:%M:%S")
         current_date_and_time = (f'<span style="font-size:26pt;">{current_date}</span><br> <span style="font-size:60pt; font-weight:900; font-style:oblique; '
-                         f'font-family:Arial, sans-serif;">{current_time}</span>')
+                                 f'font-family:Arial, sans-serif;">{current_time}</span>')
         self.display_date_and_time.setText(current_date_and_time)
 
     def set_button_clicked(self):

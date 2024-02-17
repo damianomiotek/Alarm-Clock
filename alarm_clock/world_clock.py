@@ -1,8 +1,10 @@
+import os
+
 import requests
 from datetime import datetime
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit, QHBoxLayout, QPushButton, QComboBox
-from utilities import month_names, weekdays
+from alarm_clock.utilities import month_names, weekdays
 from bs4 import BeautifulSoup
 
 
@@ -106,7 +108,7 @@ class WorldClock(QWidget):
 
     def search_in_api(self, place):
         abstract_api_url = "https://timezone.abstractapi.com/v1/current_time"
-        query = {"api_key": "key", "location": place}
+        query = {"api_key": os.environ['API_KEY'], "location": place}
 
         response = requests.request("GET", abstract_api_url, params=query)
         if response.status_code != 200:

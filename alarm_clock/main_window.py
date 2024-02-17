@@ -1,9 +1,9 @@
 from PyQt6.QtWidgets import QMainWindow, QTabWidget
-from alarm import Alarm
-from clock import Clock
-from stopwatch import Stopwatch
-from timer import Timer
-from world_clock import WorldClock
+from alarm_clock.alarm import Alarm
+from alarm_clock.clock import Clock
+from alarm_clock.stopwatch import Stopwatch
+from alarm_clock.timer import Timer
+from alarm_clock.world_clock import WorldClock
 
 
 class MainWindow(QMainWindow):

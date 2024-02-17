@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools >= 61.0", "wheel >= 0.38"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "alarm_clock"
+version = "1.5"
+dependencies = [
+  "beautifulsoup4==4.12.3",
+  "cachetools==5.3.2",
+  "certifi==2023.11.17",
+  "charset-normalizer==3.3.2",
+  "httplib2==0.22.0",
+  "idna==3.6",
+  "protobuf==4.25.2",
+  "pyasn1==0.5.1",
+  "pyasn1-modules==0.3.0",
+  "pygame==2.5.2",
+  "pyparsing==3.1.1",
+  "PyQt6==6.6.1",
+  "PyQt6-Qt6==6.6.1",
+  "PyQt6-sip==13.6.0",
+  "pytz==2023.3.post1",
+  "requests==2.31.0",
+  "rsa==4.9",
+  "soupsieve==2.5",
+  "uritemplate==4.1.1",
+  "urllib3==2.1.0",
+]
+requires-python = ">=3.10"
+authors = [
+  {name = "Damian Omiotek", email = "domiotek@sii.pl"},
+]
+description = "Alarm clock application with some different functions"
+readme = "README.md"
+license = {file = "LICENSE.txt"}
+keywords = ["alarm", "alarm clock", "clock", "stopwatch", "timer", "world clock"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python :: 3.10",
+]
+
+[project.urls]
+Repository = "https://github.com/damianomiotek/Alarm-Clock"
+
+[tool.setuptools.package-data]
+"alarm_clock" = ["*.mp3"]

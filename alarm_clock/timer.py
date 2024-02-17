@@ -1,7 +1,7 @@
 from PyQt6.QtCore import Qt, QTimer, QTime
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QTimeEdit, QHBoxLayout, QPushButton, QMessageBox
-from utilities import Utilities, yes_button_str
-from dialogs.disable_timer import DisableTimerDialog
+from alarm_clock.utilities import Utilities, yes_button_str
+from alarm_clock.dialogs.disable_timer import DisableTimerDialog
 
 
 class Timer(QWidget):

@@ -1,3 +1,5 @@
+import os
+from sys import platform
 from pathlib import Path
 
 import pygame
@@ -47,7 +49,13 @@ def get_radio_buttons_for_days_of_week():
 class Utilities:
     def __init__(self):
         pygame.mixer.init()
-        self.sound_file = "alarm_classic.mp3"
+        self.sound_file = os.path.dirname(__file__)
+        if platform == "linux":
+            self.sound_file += "/alarm_classic.mp3"
+        elif platform == "windows":
+            self.sound_file += "\\alarm_classic.mp3"
+        else:
+            self.sound_file += "/alarm_classic.mp3"
         self.sound = pygame.mixer.Sound(self.sound_file)
 
     def play_alarm(self):

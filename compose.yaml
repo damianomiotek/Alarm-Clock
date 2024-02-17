@@ -1,0 +1,17 @@
+services:
+  alarm_clock:
+    build:
+      context: .
+      network: host
+    environment:
+      - API_KEY=/run/secrets/api-key
+      - DISPLAY=127.0.0.1:0.0
+    secrets:
+      - api-key
+    develop:
+      watch:
+        - action: rebuild
+          path: .
+secrets:
+  api-key:
+    file: abstract_api_key.txt

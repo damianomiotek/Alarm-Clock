@@ -3,8 +3,8 @@ import time
 from PyQt6.QtCore import QTimer, Qt
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit, QHBoxLayout
 
-from utilities import get_current_date
-from other_widgets.analog_clock import AnalogClock
+from alarm_clock.utilities import get_current_date
+from alarm_clock.other_widgets.analog_clock import AnalogClock
 
 
 class Clock(QWidget):
